@@ -43,10 +43,10 @@ int main(void)
 
 
     // Send comands
-    zeroEncoder(socketCan, frame);
+    //zeroEncoder(socketCan, frame);
     sleep(1);
     enterMotorMode(socketCan, frame);
-    runMotor(socketCan, frame);
+    torqueControl(socketCan, frame, 0x1234, 0x123, 0x123, 0x123, 0x123);
     sleep(5);
     exitMotorMode(socketCan, frame);
 

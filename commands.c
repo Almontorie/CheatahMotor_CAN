@@ -2,7 +2,6 @@
 #include "commands.h"
 
 #include <stdio.h>
-#include <stdint.h>
 #include <string.h>
 #include <unistd.h>
 #include <byteswap.h>
@@ -49,6 +48,26 @@ void zeroEncoder(int socketCan, struct can_frame frame)
     uint64_t data = CAN_ZERO_ENCODER;
     data = bswap_64(data);
     memcpy(frame.data, &data, CAN_FRAMESIZE);
+
+	if (write(socketCan, &frame, sizeof(struct can_frame)) != sizeof(struct can_frame))
+    {
+		perror("Write");
+	}
+}
+
+void torqueControl(int socketCan, struct can_frame frame, uint16_t posiiton,
+                    uint16_t velocity, uint16_t kp, uint16_t kd, uint16_t i)
+{
+	frame.can_id = 0x001;
+	frame.can_dlc = CAN_FRAMESIZE;
+    frame.data[0] = posiiton >> 8;
+    frame.data[1] = posiiton & 0xFF;
+    frame.data[2] = velocity >> 4;
+    frame.data[3] = ((velocity & 0x0F) << 4) | (kp >> 8);
+    frame.data[4] = kp & 0xFF;
+    frame.data[5] = kd >> 4;
+    frame.data[6] = ((kd & 0x0F) << 4) | (i >> 8);
+    frame.data[7] = i & 0xFF;
 
 	if (write(socketCan, &frame, sizeof(struct can_frame)) != sizeof(struct can_frame))
     {
