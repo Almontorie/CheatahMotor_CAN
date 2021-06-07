@@ -16,30 +16,30 @@
 int main(void)
 {
     int socketCan;
-	struct sockaddr_can addr;
-	struct ifreq ifr;
+    struct sockaddr_can addr;
+    struct ifreq ifr;
     struct can_frame frame;
 
     printf("CAN Interface for CheetahMotor\n");
 
-	if ((socketCan = socket(PF_CAN, SOCK_RAW, CAN_RAW)) < 0)
+    if ((socketCan = socket(PF_CAN, SOCK_RAW, CAN_RAW)) < 0)
     {
-		perror("Socket");
-		return 1;
-	}
+        perror("Socket");
+        return 1;
+    }
 
-	strcpy(ifr.ifr_name, "can0" );
-	ioctl(socketCan, SIOCGIFINDEX, &ifr);
+    strcpy(ifr.ifr_name, "can0" );
+    ioctl(socketCan, SIOCGIFINDEX, &ifr);
 
-	memset(&addr, 0, sizeof(addr));
-	addr.can_family = AF_CAN;
-	addr.can_ifindex = ifr.ifr_ifindex;
+    memset(&addr, 0, sizeof(addr));
+    addr.can_family = AF_CAN;
+    addr.can_ifindex = ifr.ifr_ifindex;
 
-	if (bind(socketCan, (struct sockaddr *)&addr, sizeof(addr)) < 0)
+    if (bind(socketCan, (struct sockaddr *)&addr, sizeof(addr)) < 0)
     {
-		perror("Bind");
-		return 1;
-	}
+        perror("Bind");
+        return 1;
+    }
 
 
     // Send comands
@@ -51,11 +51,11 @@ int main(void)
     exitMotorMode(socketCan, frame);
 
 
-	if (close(socketCan) < 0)
+    if (close(socketCan) < 0)
     {
-		perror("Close");
-		return 1;
-	}
+        perror("Close");
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
