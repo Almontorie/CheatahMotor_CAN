@@ -18,4 +18,7 @@ void runMotor(int socketCan, struct can_frame frame);
 void torqueControl(int socketCan, struct can_frame frame, uint16_t posiiton,
                     uint16_t velocity, uint16_t kp, uint16_t kd, uint16_t i);
 
+void rampCurrent(int socketCan, struct can_frame frame);
+void rampVelocity(int socketCan, struct can_frame frame);
+
 #endif // COMMANDS_H

@@ -89,3 +89,29 @@ void runMotor(int socketCan, struct can_frame frame)
         perror("Write");
     }
 }
+
+
+void rampCurrent(int socketCan, struct can_frame frame)
+{
+    uint16_t current = 0;
+    while(current <= 0x0FFF)
+    {
+        printf("Target current: %d\n", current);
+        torqueControl(socketCan, frame, 0, 0, 0, 0, current);
+        sleep(4);
+        current += 0x100;
+    }
+}
+
+
+void rampVelocity(int socketCan, struct can_frame frame)
+{
+    uint16_t vel = 0;
+    while(vel <= 0x0FFF)
+    {
+        printf("Target vel: %d\n", vel);
+        torqueControl(socketCan, frame, 1, vel, 0, 0x0FFF, 0);
+        usleep(125000);
+        vel += 0x10;
+    }
+}

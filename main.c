@@ -43,11 +43,28 @@ int main(void)
 
 
     // Send comands
-    //zeroEncoder(socketCan, frame);
-    sleep(1);
     enterMotorMode(socketCan, frame);
-    torqueControl(socketCan, frame, 0x1234, 0x123, 0x123, 0x123, 0x123);
-    sleep(5);
+
+
+    // rampCurrent(socketCan, frame);
+    rampVelocity(socketCan, frame);
+
+    // Try Kd param
+    // torqueControl(socketCan, frame, 0, 0, 0, 0x0FFF, 0); // -V_MAX
+    // sleep(5);
+    // torqueControl(socketCan, frame, 0, 0x07FF, 0, 0x0FFF, 0); // 0
+    // sleep(5);
+    // torqueControl(socketCan, frame, 0, 0x0FFF, 0, 0x0FFF, 0); // V_MAX
+    // sleep(5);
+
+    // Try Feed forward current param
+    // torqueControl(socketCan, frame, 0, 0, 0, 0, 0);
+    // sleep(5);
+    // torqueControl(socketCan, frame, 0, 0, 0, 0, 0x7FF);
+    // sleep(5);
+    // torqueControl(socketCan, frame, 0, 0, 0, 0, 0xFFF);
+    // sleep(5);
+
     exitMotorMode(socketCan, frame);
 
 
