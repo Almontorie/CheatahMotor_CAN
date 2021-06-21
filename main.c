@@ -13,6 +13,9 @@
 
 #include "commands.h"
 
+#define CONVERT_VEL(n) n+2047
+#define CONVERT_POS(n) n+2047
+
 int main(void)
 {
     int socketCan;
@@ -47,15 +50,17 @@ int main(void)
 
 
     // rampCurrent(socketCan, frame);
-    rampVelocity(socketCan, frame);
+    // rampVelocity(socketCan, frame);
 
     // Try Kd param
-    // torqueControl(socketCan, frame, 0, 0, 0, 0x0FFF, 0); // -V_MAX
-    // sleep(5);
-    // torqueControl(socketCan, frame, 0, 0x07FF, 0, 0x0FFF, 0); // 0
-    // sleep(5);
-    // torqueControl(socketCan, frame, 0, 0x0FFF, 0, 0x0FFF, 0); // V_MAX
-    // sleep(5);
+    int pos, vel, kp, kd, ff_current;
+    pos = 0;
+    vel = CONVERT_VEL(2048);
+    kp = 0;
+    kd = 0x100;
+    ff_current = CONVERT_POS(0);
+    torqueControl(socketCan, frame, pos, vel, kp, kd, ff_current);
+    sleep(5);
 
     // Try Feed forward current param
     // torqueControl(socketCan, frame, 0, 0, 0, 0, 0);
